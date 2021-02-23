@@ -2,7 +2,8 @@ import { Schema, model } from 'mongoose';
 
 const ProductSchema = new Schema({
     _id        : { type: Schema.Types.ObjectId, auto: true },
-    catgoryId  : { type: Schema.Types.ObjectId, required: false },
+    // catgoryId  : { type: Schema.Types.ObjectId, required: true },
+    company  : { type: Schema.Types.ObjectId, ref:'Company' },
     title      : { type: String, required: true },
     sku        : { type: String, required: true, unique: true, lowercase: true },
     description: { type: String, required: true },

@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import  CategoryContrller from "../controllers/CompanyController";
+import  { CompanyController } from "../controllers/CompanyController";
 import  { ProductController } from "../controllers/ProductController";
 
 class ProductRoutes{

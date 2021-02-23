@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
-import Company from '../models/Company'
+import  { CompanyController } from "../controllers/CompanyController";
+import Company from '../models/Company';
 
 class CompanyRoutes{
     router: Router
@@ -9,49 +10,50 @@ class CompanyRoutes{
         this.routes()
     }
 
-    public async create(req:Request, res:Response): Promise<any>{
-        console.log(req.body);
-        const newCategory = new Company(req.body);
-        await newCategory.save();
-        res.json({status: res.status, data: newCategory});
+    private async create(req:Request, res:Response): Promise<any>{
+        const companyCntrl =  CompanyController.getInstance();
+        const response = await companyCntrl.create(req, res);
+        res.json(response);
     }
 
-    public async getAll(req:Request, res:Response): Promise<any>{
-        const companies = await Company.find();
+    private async getAll(req:Request, res:Response): Promise<any>{
+        const companyCntrl =  CompanyController.getInstance();
+        const companies = await companyCntrl.getAll();
         res.json(companies);
     }
 
-    public async get(req:Request, res:Response): Promise<any>{
-        console.log('in get', req.params.id);
-        const companies = await Company.find({ _id: req.params.id });
+    private async get(req:Request, res:Response): Promise<any>{
+        const companyCntrl =  CompanyController.getInstance();
+        const companies = await companyCntrl.get( req.params.id );
         res.json(companies);
     }
 
-    public async update(req:Request, res:Response): Promise<any>{
-        const { id } = req.params;
-        const company = await Company.findOneAndUpdate({id}, req.body);
-        res.json({status: res.status, data: company});
+    private async update(req:Request, res:Response): Promise<any>{
+        const companyCntrl =  CompanyController.getInstance();
+        const company = await companyCntrl.update(req, res);
+        res.json(company);
     }
 
-    public async remove(req:Request, res:Response): Promise<any>{
-        await Company.findOneAndRemove({ _id: req.params.id });
-        res.json({ response: 'deleted Successfully' });
+    private async remove(req:Request, res:Response): Promise<any>{
+        const companyCntrl =  CompanyController.getInstance();
+        const response = await companyCntrl.remove(req);
+        res.json(response);
     }
 
-    public async search(req:Request, res:Response):Promise<any>{
-        const companies = await Company.find({name: { $regex: '.*' + req.params.term + '.*' } });
-        console.info(companies);
+    private async search(req:Request, res:Response):Promise<any>{
+        const companyCntrl =  CompanyController.getInstance();
+        const companies = await companyCntrl.search(req);
         res.json(companies);
     }
 
     routes(){
-        this.router.get('/', this.getAll)
-        this.router.get('/search/:term', this.search)
-        this.router.get('/:id', this.get)
-        this.router.post('/', this.create)
-        this.router.put('/:id', this.update)
-        this.router.delete('/:id', this.remove)
-        this.router.delete('/:id', this.remove)
+        this.router.get('/', this.getAll);
+        this.router.get('/search/:term', this.search);
+        this.router.get('/:id', this.get);
+        this.router.post('/', this.create);
+        this.router.put('/:id', this.update);
+        this.router.delete('/:id', this.remove);
+        this.router.delete('/:id', this.remove);
     }
 }
 

@@ -25,10 +25,15 @@ export class ProductController{
     }
     
     public async create(req:Request, res:Response){
-        const { title, sku, description, category } = req.body;
-        const newProducto = new Product({title, sku, description});
-        await newProducto.save();
-        return  { status: res.status, data: newProducto } ;
+        const { title, sku, description, company } = req.body;
+        try{
+            const newProducto = new Product({title, sku, description, company});
+            await newProducto.save();
+            return  { status: res.status, data: newProducto,  err: false };
+        }catch(err){
+            console.log(err);
+            return { err: true, data: err.errmsg };
+        }
     }
     
     public async getAll( ): Promise< any >{
