@@ -8,7 +8,7 @@ import cors from 'cors';
 
 import indexRoutes from './routes/indexRoutes';
 import productRoutes from './routes/productRoutes';
-import categoryRoutes from './routes/categoryRoutes';
+import companyRoutes from './routes/companyRoutes';
 
 class Server{
     public app: express.Application;
@@ -49,9 +49,8 @@ class Server{
         const router: express.Router = express.Router();
 
         this.app.use('/', indexRoutes);
-        // this.app.use('/api/products' + productRoutes);
         this.app.use('/api/products', productRoutes);
-        this.app.use('/api/categories' , categoryRoutes);
+        this.app.use('/api/companies' , companyRoutes);
     }
 
     public start(){

@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
-import Category from '../models/Category'
+import Company from '../models/Company'
 
-class CategoryRoutes{
+class CompanyRoutes{
     router: Router
 
     constructor(){
@@ -11,37 +11,37 @@ class CategoryRoutes{
 
     public async create(req:Request, res:Response): Promise<any>{
         console.log(req.body);
-        const newCategory = new Category(req.body);
+        const newCategory = new Company(req.body);
         await newCategory.save();
         res.json({status: res.status, data: newCategory});
     }
 
     public async getAll(req:Request, res:Response): Promise<any>{
-        const categories = await Category.find();
-        res.json(categories);
+        const companies = await Company.find();
+        res.json(companies);
     }
 
     public async get(req:Request, res:Response): Promise<any>{
         console.log('in get', req.params.id);
-        const categories = await Category.find({ _id: req.params.id });
-        res.json(categories);
+        const companies = await Company.find({ _id: req.params.id });
+        res.json(companies);
     }
 
     public async update(req:Request, res:Response): Promise<any>{
         const { id } = req.params;
-        const category = await Category.findOneAndUpdate({id}, req.body);
-        res.json({status: res.status, data: category});
+        const company = await Company.findOneAndUpdate({id}, req.body);
+        res.json({status: res.status, data: company});
     }
 
     public async remove(req:Request, res:Response): Promise<any>{
-        await Category.findOneAndRemove({ _id: req.params.id });
+        await Company.findOneAndRemove({ _id: req.params.id });
         res.json({ response: 'deleted Successfully' });
     }
 
     public async search(req:Request, res:Response):Promise<any>{
-        const categories = await Category.find({name: { $regex: '.*' + req.params.term + '.*' } });
-        console.info(categories);
-        res.json(categories);
+        const companies = await Company.find({name: { $regex: '.*' + req.params.term + '.*' } });
+        console.info(companies);
+        res.json(companies);
     }
 
     routes(){
@@ -55,7 +55,7 @@ class CategoryRoutes{
     }
 }
 
-const categories = new CategoryRoutes()
-categories.routes()
+const companies = new CompanyRoutes()
+companies.routes()
 
-export default categories.router
+export default companies.router

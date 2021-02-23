@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-const CategorySchema = new Schema({
+const CompanySchema = new Schema({
     _id: { type: Schema.Types.ObjectId, auto: true },
     name: { type: String, required: true },
     description: { type: String, required: false },
@@ -8,5 +8,5 @@ const CategorySchema = new Schema({
     updatedAt  : Date
 })
 
-export default model('Category', CategorySchema)
+export default model('Company', CompanySchema)
 

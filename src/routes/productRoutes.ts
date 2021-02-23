@@ -1,55 +1,43 @@
 import { Request, Response, Router } from 'express';
-import  CategoryContrller from "../controllers/CategoryContrller";
-import  ProductController from "../controllers/ProductController";
-import Product from '../models/Product';
-import { UploadedFile } from 'express-fileupload';
-// import UploadedFile from 'express-fileupload'
+import  CategoryContrller from "../controllers/CompanyController";
+import  { ProductController } from "../controllers/ProductController";
 
 class ProductRoutes{
     router: Router;
 
     constructor(){
         this.router = Router();
-        this.routes();
+        this.routes();   
     }
 
     public async create(req:Request, res:Response): Promise<any>{
-        if(req.files){
-            let myFile  = req.files.image as UploadedFile
-            let nameToSave = myFile.name.split('.')
-            let nameFile = `${nameToSave[0]}_${Date.now()}.${nameToSave[1]}`
-            myFile.mv('public/' + nameFile)
-        
-            // const catCtrl = new CategoryContrller()
-            const { title, sku, description, category } = req.body;
-            // const cat = await catCtrl.getCategorieOrCreateByName(category)
-            // const catgoryId = cat._id
-            let image = nameFile
-            const newProducto = new Product({title, sku, description, image});
-            await newProducto.save();
-            res.json({status: res.status, data: newProducto});
-        }
+        const productCntrl =  ProductController.getInstance();
+        const response = await productCntrl.create(req, res);
+        res.json(response);
     }
 
     public async getAll(req:Request, res:Response): Promise<any>{
-        const products = await Product.find();
+        const productCntrl =  ProductController.getInstance();
+        const products = await productCntrl.getAll();
         res.json(products);
     }
 
     public async get(req:Request, res:Response): Promise<any>{
-        const products = await Product.find({ _id: { $regex: req.params.id } });
+        const productCntrl =  ProductController.getInstance();
+        const products = await productCntrl.get( req );
         res.json(products);
     }
 
     public async update(req:Request, res:Response): Promise<any>{
-        const { id } = req.params;
-        const product = await Product.findOneAndUpdate({id}, req.body);
-        res.json({status: res.status, data: product});
+        const productCntrl =  ProductController.getInstance();
+        const product = await productCntrl.update(req, res);
+        res.json(product);
     }
 
     public async remove(req:Request, res:Response): Promise<any>{
-        await Product.findOneAndRemove({ _id: req.params.id });
-        res.json({ response: 'deleted Successfully' });
+        const productCntrl =  ProductController.getInstance();
+        const response = await productCntrl.remove(req);
+        res.json(response);
     }
 
     routes(){

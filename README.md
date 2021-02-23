@@ -1,6 +1,6 @@
-# Backend de Storak
+# Backend de SeedApp
 
-Para correr el proyecto se debe tener:
+Utilerias:
 - Typescript
 - Mongo
 
