@@ -37,7 +37,7 @@ export class ProductController{
     }
     
     public async getAll( ): Promise< any >{
-        const products = await Product.find();
+        const products = await Product.find().populate('company');
         return products;
     }
 
