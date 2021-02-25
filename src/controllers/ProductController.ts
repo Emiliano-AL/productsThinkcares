@@ -43,7 +43,7 @@ export class ProductController{
 
     
     public async get(req:Request): Promise<any>{
-        const products = await Product.findById(req.params.id);
+        const products = await Product.findById(req.params.id).populate('company');
         return products;
     }
 
